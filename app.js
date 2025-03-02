@@ -29,7 +29,7 @@ const serviceAccount = {
 };
 
 
-console.log("Private Key:", process.env.FIREBASE_PRIVATE_KEY);
+// console.log("Private Key:", process.env.FIREBASE_PRIVATE_KEY);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -523,7 +523,7 @@ app.post("/events/:eventId/challenges/:challengeId/update", isAuthenticated, isO
 });
 // Flag submission route
 // Route to handle flag submission
-app.post("/events/:eventId/challenges/:challengeId/submit", isAuthenticated, async (req, res) => {
+app.post("/events/:eventId/challenge/:challengeId/submit", isAuthenticated, async (req, res) => {
   const eventId = req.params.eventId;
   const challengeId = req.params.challengeId;
   const submittedFlag = req.body.flag;
@@ -580,13 +580,12 @@ app.post("/events/:eventId/challenges/:challengeId/submit", isAuthenticated, asy
     } else {
       req.flash("error", "Incorrect flag. Try again!");
     }
-
-    res.redirect(`/events/${eventId}/challenges/${challengeId}`);
   } catch (error) {
-    console.error("Error validating flag:", error);
-    req.flash("error", "An error occurred. Please try again.");
-    res.redirect(`/events/${eventId}/challenges/${challengeId}`);
+    console.error("Error validating flag or updating points:", error);
+    req.flash("error", "An error occurred. Please try again later.");
   }
+
+  res.redirect(`/events/${eventId}/challenges/${challengeId}`);
 });
 
 // Login/Logout Routes
