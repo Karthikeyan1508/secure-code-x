@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="/styles/styles.css" />
+  </head>
+  <body>
+    <%- include('partials/header') %>
+
+    <div class="auth-container">
+      <h1 id="login">Login</h1>
+
+      <% if (messages.error) { %>
+      <div class="alert error-alert"><%= messages.error %></div>
+      <% } %>
+
+      <form action="/login" method="POST" class="auth-form">
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          placeholder="Email"
+        />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+          placeholder="Password"
+        />
+
+        <button type="submit" class="auth-button">Submit</button>
+      </form>
+      <p>
+        Not registered?
+        <a href="/register" class="auth-link">Register now</a>
+      </p>
+    </div>
+
+    <%- include('partials/footer') %>
+
+    <script>
+      setTimeout(() => {
+        const alert = document.querySelector(".alert");
+        if (alert) {
+          alert.style.display = "none";
+        }
+      }, 8000);
+    </script>
+  </body>
+</html>

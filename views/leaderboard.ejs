@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leaderboard - <%= event.title || "Event" %></title>
+    <link rel="stylesheet" href="/styles/styles.css" />
+    <style>
+      .leaderboard-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 1rem;
+        margin-top: 3.5rem;
+      }
+
+      .leaderboard-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1.5rem;
+      }
+
+      .leaderboard-table th,
+      .leaderboard-table td {
+        padding: 12px;
+        text-align: center;
+        border: 1px solid #383838;
+      }
+
+      .leaderboard-table th {
+        background-color: #2a2929;
+        color: #ff7f50;
+        font-weight: 600;
+        font-size: 1.4rem;
+      }
+
+      .leaderboard-table td {
+        background-color: #1b1b1b;
+        color: #ddd;
+        font-size: 1.2rem;
+      }
+
+      .leaderboard-table tr:hover td {
+        background-color: #d1d1d108;
+      }
+
+      .btn-back {
+        display: inline-block;
+        margin-top: 1.5rem;
+        padding: 0.75rem 1.5rem;
+        background-color: #ff7f50;
+        color: #121212;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-back:hover {
+        background-color: #e36c40;
+      }
+
+      .alert {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        border-radius: 8px;
+        text-align: center;
+      }
+
+      .success-alert {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+      }
+
+      .error-alert {
+        background-color: #ffebee;
+        color: #c62828;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('partials/event-header') %>
+    <div class="leaderboard-container">
+      <% if (!event) { %>
+        <div class="alert error-alert">
+          Event not found. <a href="/events">Go back to events</a>.
+        </div>
+      <% } else { %>
+        <h1>Leaderboard : <%= event.title || "Event" %></h1>
+
+        <% if (messages.success) { %>
+          <div class="alert success-alert">
+            <%= messages.success %>
+          </div>
+        <% } %>
+
+        <% if (messages.error) { %>
+          <div class="alert error-alert">
+            <%= messages.error %>
+          </div>
+        <% } %>
+
+        <% if (users.length > 0) { %>
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Username</th>
+                <th>Points</th>
+                <!-- <th>Completed Challenges</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <% users.forEach((user, index) => { %>
+                <tr>
+                  <td><%= index + 1 %></td>
+                  <td><%= user.username %></td>
+                  <td><%= user.points %></td>
+                  <!-- <td><%= user.completedChallenges.length %></td> -->
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        <% } else { %>
+          <p>No participants found.</p>
+        <% } %>
+
+        <a href="/events/<%= event.id %>/challenges" class="btn-back">← Back to Event</a>
+      <% } %>
+    </div>
+  </body>
+</html>

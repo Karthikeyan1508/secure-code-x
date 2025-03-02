@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Challenge - <%= challenge.title %></title>
+    <link rel="stylesheet" href="/styles/styles.css" />
+    <style>
+      /* Your existing styles... */
+
+      .edit-challenge-container {
+        min-width: 800px; /* Adjust as needed */
+        margin: 2rem auto; /* Center the container */
+        padding: 2rem;
+        margin-top: 3.5rem;
+       
+      }
+
+      .new-challenge-heading {
+        text-align: center;
+        color: #ff7f50;
+        margin-bottom: 2rem;
+        font-size: 2rem;    
+      }
+
+      .challenge-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .form-group label {
+        font-weight: 600;
+        color: #f5f5f5;
+        font-size: 1rem;
+      }
+
+      .form-control {
+        padding: 0.75rem;
+        border-radius: 4px;
+        border: 1px solid #383838;
+        background-color: #2a2929;
+        color: #f5f5f5;
+        font-size: 1rem;
+        transition: border-color 0.3s;
+      }
+
+      .form-control:focus {
+        border-color: #ff7f50;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(255, 127, 80, 0.25);
+      }
+
+      textarea.form-control {
+        min-height: 150px;
+        resize: vertical;
+      }
+
+      .btn-create {
+        padding: 0.75rem 1.5rem;
+        background-color: #e36c40;
+        color: #121212;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-top: 1rem;
+        text-align: center;
+      }
+
+      .btn-create:hover {
+        background-color: #ff7f50;
+      }
+
+      .btn-back {
+        display: inline-block;
+        margin-top: 1rem;
+        color: #e36c40;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      .btn-back:hover {
+        color: #ff7f50;
+      }
+      .tag-input {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.75rem;
+        border-radius: 4px;
+        border: 1px solid #383838;
+        background-color: #2a2929;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        background-color: #e36c40;
+        color: #121212;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        cursor: pointer;
+      }
+
+      .tag-remove {
+        margin-left: 0.5rem;
+        cursor: pointer;
+      }
+
+      .tag-input input {
+        flex: 1;
+        background: none;
+        border: none;
+        color: #f5f5f5;
+        font-size: 1rem;
+        outline: none;
+      }
+
+      .tag-input input::placeholder {
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('partials/event-header') %>
+
+    <div class="edit-challenge-container">
+      <h1>Edit Challenge</h1>
+
+      <!-- Flash Messages -->
+      <% if (messages.success || messages.error) { %>
+      <div class="flash-messages">
+        <% if (messages.success) { %> <%
+        messages.success.forEach(function(message) { %>
+        <div class="alert alert-success"><%= message %></div>
+        <% }); %> <% } %> <% if (messages.error) { %> <%
+        messages.error.forEach(function(message) { %>
+        <div class="alert alert-error"><%= message %></div>
+        <% }); %> <% } %>
+      </div>
+      <% } %>
+
+      <form
+        action="/events/<%= event.id %>/challenges/<%= challenge.id %>/update"
+        method="POST"
+        class="challenge-form"
+      >
+        <div class="form-group">
+          <label for="title">Challenge Title</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            class="form-control"
+            value="<%= challenge.title %>"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="description">Challenge Description</label>
+          <textarea
+            id="description"
+            name="description"
+            class="form-control"
+            required
+          >
+<%= challenge.description %></textarea
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="points">Points</label>
+          <input
+            type="number"
+            id="points"
+            name="points"
+            class="form-control"
+            value="<%= challenge.points %>"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="correctFlag">Correct Flag</label>
+          <input
+            type="text"
+            id="correctFlag"
+            name="correctFlag"
+            class="form-control"
+            value="<%= challenge.correctFlag %>"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="category">Category (Tags)</label>
+          <div class="tag-input" id="tagInput">
+            <% if (challenge.categories && Array.isArray(challenge.categories))
+            { %> <% challenge.categories.forEach(category => { %>
+            <span class="tag"><%= category %></span>
+            <% }); %> <% } %>
+            <input
+              type="text"
+              id="category"
+              placeholder="Add a category (e.g., Web Security)"
+              onkeydown="handleTagInput(event)"
+            />
+          </div>
+          <input
+            type="hidden"
+            id="categories"
+            name="categories"
+            value="<%= challenge.categories.join(',') %>"
+          />
+        </div>
+
+        <button type="submit" class="btn-create">Update Challenge</button>
+      </form>
+
+      <a href="/events/<%= event.id %>/challenges" class="btn-back"
+        >← Back to Challenges</a
+      >
+    </div>
+  </body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <link rel="stylesheet" href="/styles/styles.css" />
+    <style>
+      
+      .auth-form input,
+      .auth-form select {
+        width: 100%;
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        border: 1px solid #383838; /* Updated to match your border color */
+        border-radius: 4px;
+        background-color: #2a2929; /* Updated to match your input background */
+        color: #ffffff; /* Updated to match your primary text color */
+        font-size: 1rem;
+        transition: border-color 0.3s;
+      }
+
+      .auth-form input:focus,
+      .auth-form select:focus {
+        border-color: #ff7f50; /* Updated to match your primary color */
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(255, 127, 80, 0.25); /* Updated to match your primary color */
+       
+      }
+
+   
+    
+
+      
+     
+     
+    </style>
+  </head>
+  <body>
+    <%- include('partials/header') %>
+
+    <div class="auth-container">
+      <h1 id="register">Register</h1>
+
+      <% if (messages.error) { %>
+      <div class="alert error-alert"><%= messages.error %></div>
+      <% } %> <% if (messages.success) { %>
+      <div class="alert success-alert"><%= messages.success %></div>
+      <% } %>
+
+      <form action="/register" method="POST" class="auth-form">
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          placeholder="Full Name"
+        />
+        <input
+          type="text"
+          id="username"
+          name="username"
+          required
+          placeholder="Username"
+        />
+        <!-- Role Selection Dropdown -->
+        <select placeholder="Select your role" id="role" name="role" required>
+        
+          <option value="organizer">Organizer</option>
+          <option value="hacker">Hacker</option>
+        </select>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          placeholder="Email"
+        />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+          placeholder="Password (min 6 chars)"
+        />
+        <input
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          required
+          placeholder="Confirm Password"
+        />
+
+        
+
+        <button type="submit" class="auth-button">Register</button>
+        <p>
+          Already registered?
+          <a href="/login" class="auth-link">Login</a>
+        </p>
+      </form>
+    </div>
+
+    <%- include('partials/footer') %>
+
+    <script>
+      setTimeout(() => {
+        const alert = document.querySelector(".alert");
+        if (alert) {
+          alert.style.display = "none";
+        }
+      }, 8000);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Challenges - <%= event.title %></title>
+    <link rel="stylesheet" href="/styles/styles.css" />
+    <!-- Add Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      .challenges-container {
+        width: 1200px;
+        margin: 2rem auto;
+        padding: 1rem;
+        margin-top: 3.5rem;
+      }
+
+      .challenges-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+
+      .challenges-title {
+        color: #ddd; /* Updated to match your primary color */
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .add-challenge-btn {
+        padding: 0.75rem 1.5rem;
+        background-color: #e36c40; /* Updated to match your secondary color */
+        color: #121212; /* Dark background for text */
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .add-challenge-btn:hover {
+        background-color: #ff7f50; /* Updated to match your primary color */
+      }
+
+      /* Table styling */
+      .challenges-table {
+        width: 100%;
+        border-collapse: collapse;
+        /* border: 1px solid #e36c40; */
+        margin-top: 1.5rem;
+      }
+
+      .challenges-table th,
+      .challenges-table td {
+        padding: 12px;
+        text-align: center;
+        /* border-bottom: 1px solid #383838; Updated  to match your border color
+       */
+        border: 3px solid #121212;
+      }
+      .challenges-table th :nth-child(1) {
+        width: 10px;
+      }
+      .challenges-table th {
+        background-color: #2a2929; /* Updated to match your table header color */
+        color: #ff7f50; /* Updated to match your primary color */
+        font-weight: 600;
+        font-size: 1.2rem;
+        padding: 20px;
+      }
+
+      .challenges-table td {
+        background-color: #1b1b1b; /* Upda  ted to match your card background */
+        color: #ddd; /* Updated to match your secondary text color */
+        font-size: 1.1rem;
+        padding: 18px;
+      }
+
+      .challenges-table tr:hover td {
+        background-color: #d1d1d108; /* Hover effect */
+      }
+
+      .delete-btn {
+        background-color: #f38ba8; /* Red color for delete button */
+        color: #121212;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 12px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .delete-btn:hover {
+        background-color: #e36c40; /* Darker red on hover */
+      }
+
+      .delete-btn i {
+        font-size: 1rem; /* Adjust icon size */
+      }
+
+      .no-challenges {
+        text-align: center;
+        padding: 3rem;
+        background-color: #1b1b1b; /* Updated to match your card background */
+        border-radius: 8px;
+        color: #ddd; /* Updated to match your secondary text color */
+        margin-top: 2rem;
+      }
+
+      .no-challenges h3 {
+        color: #ff7f50; /* Updated to match your primary color */
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .no-challenges p {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+      }
+      .buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      .delete-btn {
+        padding: 0.75rem 1.5rem;
+        background-color: #ffffff11; /* Red color for delete button */
+        color: #e36c40;
+        border: 1px solid #e36c40;
+        border-radius: 4px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .delete-btn:hover {
+        background-color: #ffffff17; /* Darker red on hover */
+      }
+
+      .delete-btn i {
+        font-size: 1rem; /* Adjust icon size */
+      }
+
+      a{
+        color: white;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('partials/event-header') %>
+    <div class="challenges-container">
+      <div class="challenges-header">
+        <h1 class="challenges-title"><%= event.title %> - Challenges</h1>
+        <% if (user && user.role === 'organizer') { %>
+        <a
+          href="/events/<%= event.id %>/challenges/new"
+          class="add-challenge-btn"
+          >Add Challenge</a
+        >
+        <% } %>
+      </div>
+      <p><%= event.description %></p>
+      <Br /><br />
+      <hr color="#2a2929" />
+
+      <!-- Flash Messages -->
+      <% if (messages.success || messages.error) { %>
+      <div class="flash-messages">
+        <% if (messages.success) { %> <%
+        messages.success.forEach(function(message) { %>
+        <div class="alert success-alert"><%= message %></div>
+        <% }); %> <% } %> <% if (messages.error) { %> <%
+        messages.error.forEach(function(message) { %>
+        <div class="alert error-alert"><%= message %></div>
+        <% }); %> <% } %>
+      </div>
+      <% } %> <% if (challenges && challenges.length > 0) { %>
+      <table class="challenges-table">
+        <thead>
+          <tr>
+            <th>Sl No.</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Points</th>
+            <% if (user && user.role === 'organizer') { %>
+            <th>Actions</th>
+            <% } %>
+          </tr>
+        </thead>
+        <tbody>
+          <% challenges.forEach(function(challenge, index) { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td>
+              <% if (user && user.role === 'organizer') { %>
+                <a href="/events/<%= event.id %>/challenges/<%= challenge.id %>/edit">
+                  <%= challenge.title %>
+                </a>
+              <% } else { %>
+                <a href="/events/<%= event.id %>/challenges/<%= challenge.id %>">
+                  <%= challenge.title %>
+                </a>
+              <% } %>
+            </td>
+            <td>
+              <% if (challenge.categories && Array.isArray(challenge.categories)) { %>
+                <% challenge.categories.forEach(category => { %>
+                  <span class="category-label"><%= category %></span>
+                <% }); %>
+              <% } else { %>
+                <span class="category-label">No Category</span>
+              <% } %>
+            </td>
+            <td><%= challenge.points %></td>
+            <% if (user && user.role === 'organizer') { %>
+            <td>
+              <div class="buttons">
+                <form
+                  action="/events/<%= event.id %>/challenges/<%= challenge.id %>/delete"
+                  method="POST"
+                  style="display: inline"
+                >
+                  <button type="submit" class="delete-btn">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </form>
+              </div>
+            </td>
+            <% } %>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+      <% } else { %>
+      <div class="no-challenges">
+        <h3>No Challenges Found</h3>
+        <p>There are currently no challenges available for this event.</p>
+        <% if (user && user.role === 'organizer') { %>
+        <a
+          href="/events/<%= event.id %>/challenges/new"
+          class="add-challenge-btn"
+          >Add Your First Challenge</a
+        >
+        <% } %>
+      </div>
+      <% } %>
+    </div>
+    <%- include('partials/footer') %>
+  </body>
+</html>

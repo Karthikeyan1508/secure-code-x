@@ -1,0 +1,23 @@
+<header class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-logo">
+      <a href="/" class="logo">SecureCodeX</a>
+    </div>
+    <nav class="navbar-links">
+      <a href="/events">Events</a>
+      <!-- <a href="/leaderboard">Leaderboard</a> -->
+   
+    </nav>
+
+    <% if (user) { %>
+    <div class="navbar-profile">
+      <span class="profile-name">Welcome, <%= user.displayName %></span>
+      <a href="/logout"><button class="submit-btn logout">Logout</button></a>
+    </div>
+    <% } else { %>
+    <a href="/login">
+      <button class="submit-btn">Login</button>
+    </a>
+    <% } %>
+  </div>
+</header>

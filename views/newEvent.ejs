@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create CTF Event</title>
+  <link rel="stylesheet" href="/styles/styles.css">
+  <style>
+    .create-event-container {
+      min-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      /* background-color: #1b1b1b; Updated to match your card background */
+      /* border-radius: 8px; */
+      /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); */
+    }
+
+    .create-event-heading {
+      text-align: left;
+      color: #ff7f50; /* Updated to match your primary color */
+      margin-bottom: 2rem;
+      font-size: 2rem;
+    }
+
+    .event-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: #f5f5f5; /* Updated to match your primary text color */
+      font-size: 1rem;
+    }
+
+    .form-control {
+      padding: 0.75rem;
+      border-radius: 4px;
+      border: 1px solid #383838; /* Updated to match your border color */
+      background-color: #2a2929; /* Updated to match your input background */
+      color: #f5f5f5; /* Updated to match your primary text color */
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    .form-control:focus {
+      border-color: #ff7f50; /* Updated to match your primary color */
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(255, 127, 80, 0.25); /* Updated to match your primary color */
+    }
+
+    textarea.form-control {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .date-inputs {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .date-inputs .form-group {
+      flex: 1;
+    }
+
+    .btn-create {
+      padding: 0.75rem 1.5rem;
+      background-color: #e36c40; /* Updated to match your secondary color */
+      color: #121212; /* Dark background for text */
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .btn-create:hover {
+      background-color: #ff7f50; /* Updated to match your primary color */
+    }
+
+    .btn-back {
+      display: inline-block;
+      margin-top: 1rem;
+      color: #e36c40; /* Updated to match your secondary color */
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .btn-back:hover {
+      color: #ff7f50; /* Updated to match your primary color */
+    }
+
+    /* Flash messages styling */
+    .flash-messages {
+      margin-bottom: 1.5rem;
+    }
+
+    .alert {
+      padding: 0.75rem 1.25rem;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+   
+  </style>
+</head>
+<body>
+  <%- include ('partials/header')%>
+  <div class="create-event-container">
+    <h1 class="create-event-heading">Create CTF Event</h1>
+    
+    <!-- Flash Messages -->
+    <% if (messages.success || messages.error) { %>
+      <div class="flash-messages">
+        <% if (messages.success) { %>
+          <% messages.success.forEach(function(message) { %>
+            <div class="alert success-alert"><%= message %></div>
+          <% }); %>
+        <% } %>
+        <% if (messages.error) { %>
+          <% messages.error.forEach(function(message) { %>
+            <div class="alert error-alert"><%= message %></div>
+          <% }); %>
+        <% } %>
+      </div>
+    <% } %>
+
+    <form action="/events/new" method="POST" class="event-form">
+      <div class="form-group">
+        <label for="title">Event Title</label>
+        <input type="text" id="title" name="title" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="description">Event Description</label>
+        <textarea id="description" name="description" class="form-control" required></textarea>
+      </div>
+      <div class="date-inputs">
+        <div class="form-group">
+          <label for="start_date">Start Date</label>
+          <input type="datetime-local" id="start_date" name="start_date" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="end_date">End Date</label>
+          <input type="datetime-local" id="end_date" name="end_date" class="form-control" required>
+        </div>
+      </div>
+      <button type="submit" class="btn-create">Create Event</button>
+    </form>
+
+    <a href="/events" class="btn-back">← Back to Events</a>
+  </div>
+
+  <script>
+    // Set minimum date values to current date and time
+    document.addEventListener('DOMContentLoaded', function() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      const hour = String(now.getHours()).padStart(2, '0');
+      const minute = String(now.getMinutes()).padStart(2, '0');
+      
+      const currentDateTime = `${year}-${month}-${day}T${hour}:${minute}`;
+      
+      document.getElementById('start_date').min = currentDateTime;
+      document.getElementById('end_date').min = currentDateTime;
+      
+      // Ensure end date is after start date
+      document.getElementById('start_date').addEventListener('change', function() {
+        document.getElementById('end_date').min = this.value;
+      });
+    });
+  </script>
+</body>
+</html>

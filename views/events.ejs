@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CTF Events</title>
+  <link rel="stylesheet" href="/styles/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    .events-container {
+     width: 1200px;
+      margin: 2rem auto;
+      padding: 1rem;
+      margin-top: 3.5rem;
+    }
+
+    .events-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .events-title {
+      color: #ff7f50; /* Primary color */
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .create-event-btn {
+      padding: 0.75rem 1.5rem;
+      background-color: #e36c40; /* Secondary color */
+      color: #121212; /* Dark text */
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .create-event-btn:hover {
+      background-color: #ff7f50; /* Primary color */
+    }
+
+    /* Flash messages styling */
+    .flash-messages {
+      margin-bottom: 1.5rem;
+    }
+
+    .alert {
+      padding: 0.75rem 1.25rem;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    .alert-success {
+      background-color: rgba(166, 227, 161, 0.2);
+      border: 1px solid #a6e3a1;
+      color: #a6e3a1;
+    }
+
+    .alert-error {
+      background-color: rgba(243, 139, 168, 0.2);
+      border: 1px solid #f38ba8;
+      color: #f38ba8;
+    }
+
+    /* Events grid */
+    
+
+    .event-card {
+      background-color: #1b1b1b; /* Card background */
+      border-radius: 8px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      border: 2px solid transparent;
+    }
+
+    .event-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .event-header {
+      background-color: #2a2929; /* Header background */
+      padding: 1.5rem;
+      
+      border-bottom: 1px solid #383838; /* Border color */
+    }
+
+    .event-title {
+      color: #ff7f50; /* Primary color */
+      font-size: 1.5rem;
+      margin: 0 0 0.5rem 0;
+      font-weight: 600;
+    }
+
+    .event-status {
+      display: inline-block;
+      padding: 0.35rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .status-upcoming {
+      background-color: rgba(137, 180, 250, 0.2);
+      color: #89b4fa;
+    }
+
+    .status-active {
+      background-color: rgba(166, 227, 161, 0.2);
+      color: #a6e3a1;
+    }
+
+    .status-completed {
+      background-color: rgba(250, 235, 235, 0.197);
+      color: #f9a796;
+    }
+
+    .event-organizer {
+      color: #ddd; /* Secondary text color */
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .event-body {
+      padding: 1.5rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .event-description {
+      color: #ddd; /* Secondary text color */
+      font-size: 1rem;
+      line-height: 1.6;
+      margin: 0 0 1.5rem 0;
+      flex-grow: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .event-dates {
+      color: #ddd; /* Secondary text color */
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .event-date {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .event-date-icon {
+      margin-right: 0.5rem;
+      width: 16px;
+      height: 16px;
+      display: inline-block;
+    }
+
+    .event-date-label {
+      font-weight: 600;
+      margin-right: 0.5rem;
+      color: #e36c40;
+    }
+
+    .event-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid #383838; /* Border color */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem; /* Gap between buttons */
+    }
+
+    .event-link {
+      padding: 0.75rem 1.5rem;
+      background-color: #e36c40; /* Secondary color */
+      color: #121212; /* Dark text */
+      text-align: center;
+      border-radius: 4px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background-color 0.3s;
+      flex: 1; /* Take remaining space */
+    }
+
+    .event-link:hover {
+      background-color: #ff7f50; /* Primary color */
+    }
+
+    .delete-btn {
+      padding: 0.75rem 1.5rem;
+      background-color: #ffffff11; /* Delete button background */
+      color: #e36c40;
+      border: 1px solid #e36c40;
+      border-radius: 4px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .delete-btn:hover {
+      background-color: #ffffff17; /* Darker background on hover */
+    }
+
+    .delete-btn i {
+      font-size: 1.2rem; /* Icon size */
+    }
+
+    /* No events message */
+    
+
+    /* Event filter tabs */
+    .event-tabs {
+      display: flex;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid #383838; /* Border color */
+    }
+
+    .event-tab {
+      padding: 0.75rem 1.25rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #ddd; /* Secondary text color */
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .event-tab.active {
+      color: #ff7f50; /* Primary color */
+    }
+
+    .event-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: #ff7f50; /* Primary color */
+    }
+
+    .event-tab:hover:not(.active) {
+      color: #e36c40; /* Secondary color */
+    }
+
+    .events-grid {
+    min-height: 300px; /* Adjust this value as needed */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* Style for the no-events message */
+  .no-events {
+    grid-column: 1 / -1; /* Span all columns */
+    text-align: center;
+    padding: 3rem;
+    background-color: #1b1b1b; /* Match card background */
+    border-radius: 8px;
+    color: #ddd; /* Secondary text color */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px; /* Match the min-height of the grid */
+    min-width: 100px;
+  }
+
+  .no-events h3 {
+    color: #ff7f50; /* Primary color */
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .no-events p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  a{
+    text-decoration: none;
+  }
+  </style>
+</head>
+<body>
+  <%- include('partials/header') %>
+  <div class="events-container">
+    <div class="events-header">
+      <h1 class="events-title">CTF Events</h1>
+      <% if (user && user.role === 'organizer') { %>
+        <a href="/events/new" class="create-event-btn">Create Event</a>
+      <% } %>
+    </div>
+
+    <!-- Flash Messages -->
+    <% if (messages.success || messages.error) { %>
+      <div class="flash-messages">
+        <% if (messages.success) { %>
+          <% messages.success.forEach(function(message) { %>
+            <div class="alert alert-success"><%= message %></div>
+          <% }); %>
+        <% } %>
+        <% if (messages.error) { %>
+          <% messages.error.forEach(function(message) { %>
+            <div class="alert alert-error"><%= message %></div>
+          <% }); %>
+        <% } %>
+      </div>
+    <% } %>
+
+    <!-- Event filter tabs -->
+    <div class="event-tabs">
+      <button class="event-tab active" data-filter="all">All Events</button>
+      <button class="event-tab" data-filter="upcoming">Upcoming</button>
+      <button class="event-tab" data-filter="active">Active</button>
+      <button class="event-tab" data-filter="completed">Completed</button>
+      <% if (user && user.role === 'organizer') { %>
+        <button class="event-tab" data-filter="your-events">Your Events</button>
+      <% } %>
+    </div>
+
+    <% if (events && events.length > 0) { %>
+      <div class="events-grid">
+        <% events.forEach(function(event) { %>
+          <% 
+            const now = new Date();
+            const startDate = new Date(event.start_date);
+            const endDate = new Date(event.end_date);
+            
+            let status;
+            if (now < startDate) {
+              status = "upcoming";
+            } else if (now >= startDate && now <= endDate) {
+              status = "active";
+            } else {
+              status = "completed";
+            }
+
+            // Check if the logged-in user is the organizer of the event
+            const isOrganizer = user && user.role === 'organizer' && user.uid === event.createdBy;
+
+            // Format dates for display
+            const formatDate = (date) => {
+              return new Date(date).toLocaleString('en-US', {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+              });
+            };
+          %>
+          <div class="event-card" data-status="<%= status %>" data-organizer="<%= event.createdBy %>">
+            <div class="event-header">
+              <h2 class="event-title"><a href="/events/<%=event.id%>/challenges"><%= event.title %></a></h2>
+              <div class="event-status status-<%= status %>">
+                <%= status.charAt(0).toUpperCase() + status.slice(1) %>
+              </div>
+              <!-- <p class="event-organizer">Organized by: <%= event.organizer %></p> -->
+            </div>
+            <div class="event-body">
+              <p class="event-description"><%= event.description %></p>
+              <div class="event-dates">
+                <div class="event-date">
+                  <span class="event-date-label">Starts:</span>
+                  <span><%= formatDate(event.start_date) %></span>
+                </div>
+                <div class="event-date">
+                  <span class="event-date-label">Ends:</span>
+                  <span><%= formatDate(event.end_date) %></span>
+                </div>
+              </div>
+            </div>
+            <div class="event-footer">
+              <% if (user && user.role === 'hacker') { %>
+                <% if (event.participants && event.participants.includes(user.uid)) { %>
+                  <span class="joined-status">Joined</span>
+                <% } else { %>
+                  <form action="/events/<%= event.id %>/join" method="POST" style="display: inline;">
+                    <button type="submit" class="event-link">Join Event</button>
+                  </form>
+                <% } %>
+              <% } else { %>
+                <a href="/events/<%= event.id %>/challenges" class="event-link">View Event</a>
+              <% } %>
+              <% if (isOrganizer) { %>
+                <form action="/events/<%= event.id %>/delete" method="POST" style="display: inline;">
+                  <button type="submit" class="delete-btn">
+                    <i class="fas fa-trash"></i> <!-- Dustbin icon -->
+                  </button>
+                </form>
+              <% } %>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="no-events">
+        <h3>No Events Found</h3>
+        <p>There are currently no CTF events available.</p>
+        <% if (user && user.role === 'organizer') { %>
+          <a href="/events/new" class="create-event-btn">Create Your First Event</a>
+        <% } %>
+      </div>
+    <% } %>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const filterTabs = document.querySelectorAll('.event-tab');
+      const eventCards = document.querySelectorAll('.event-card');
+      
+      filterTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          // Remove active class from all tabs
+          filterTabs.forEach(t => t.classList.remove('active'));
+          
+          // Add active class to clicked tab
+          this.classList.add('active');
+          
+          const filter = this.getAttribute('data-filter');
+          
+          // Show/hide event cards based on filter
+          eventCards.forEach(card => {
+            const status = card.getAttribute('data-status');
+            const organizer = card.getAttribute('data-organizer');
+            const userId = '<%= user ? user.uid : "" %>';
+
+            if (filter === 'all') {
+              card.style.display = 'flex';
+            } else if (filter === 'your-events') {
+              card.style.display = organizer === userId ? 'flex' : 'none';
+            } else {
+              card.style.display = status === filter ? 'flex' : 'none';
+            }
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

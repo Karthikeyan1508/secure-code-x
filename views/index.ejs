@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CyberISE - CTF</title>
+  
+
+    <link rel="stylesheet" href="/styles/styles.css" />
+    <style>
+      .hero {
+        align-content: center;
+        justify-items: center;
+      }
+      .hero-heading {
+        margin-top: -30px;
+        font-size: 7rem;
+      }
+
+      .hero-caption {
+        font-size: 2rem;
+      }
+
+      /* Hero Section */
+      .hero {
+        display: flex;
+        margin-top: 20px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 80vh;
+        text-align: center;
+        /* background-color:#f4f4f4; */
+      }
+
+      .hero-heading {
+        /* margin-top: 150px;    */
+        font-size: 8rem;
+        font-weight: bold;
+        color: #e36c40;
+      }
+
+      .hero-caption {
+        font-size: 2.5rem;
+        color: #f5f5f5;
+      }
+
+      /* Rules Section */
+      .rules-section {
+        background-color: #1b1b1b;
+        color: #fff;
+        width: 100%;
+        padding: 60px 15px;
+      }
+
+      .rules-section h2 {
+        text-align: center;
+        margin-bottom: 40px;
+        font-size: 3rem;
+        color: #e36c40;
+      }
+
+      .rules-list {
+        list-style-type: none;
+        padding: 0;
+        max-width: 750px;
+        margin: 0 auto;
+      }
+
+      .rules-list li {
+        /* background: #fff; */
+        color: #f5f5f5;
+        border: 1px solid #4d4c4c;
+        margin: 10px 0;
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+        font-size: 1.25rem;
+      }
+
+      .rules-list li:hover {
+        border: 1px solid #e36c40;
+        cursor: pointer;
+      }
+
+      /* Features Section */
+      .features-section {
+        /* background-color: #fff; */
+        padding: 80px 20px;
+        margin-bottom: 60px;
+      }
+
+      .features-section h2 {
+        text-align: center;
+        margin-bottom: 40px;
+        font-size: 3rem;
+        color: #e36c40;
+      }
+
+      .features {
+        display: flex;
+        /* margin-top: 20px; */
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 60px;
+      }
+      /* 
+.feature-card {
+    background: #191919;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    flex: 1 1 calc(30% - 20px);
+    max-width: 300px;
+    text-align: center;
+}
+.feature-card:hover{
+        border: 1px solid #e36c40;
+} */
+      .feature-card h3 {
+        margin-bottom: 15px;
+        font-size: 1.6rem;
+        font-weight: bold;
+        color: #e36c40;
+      }
+      .features {
+        justify-content: center;
+      }
+      .feature-card p {
+        color: #fff;
+        font-size: 1.05rem;
+        line-height: 1.5;
+        padding-bottom: 10px;
+      }
+
+      h1 {
+        padding-top: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('partials/header') %>
+
+    <div class="hero">
+      <h1 class="hero-heading">SecureCodeX</h1>
+      <p class="hero-caption">A 12 Hour CTF Challenge</p>
+    </div>    
+
+   
+
+    <section id="features" class="features-section">
+      <div class="container">
+        <h2>Benefits of CTF</h2>
+        <div class="features">
+          <div class="feature-card card">
+            <h3>CTF Builder</h3>
+            <p>
+              Gain practical experience with real-world security tools, tricks
+              and techniques.
+            </p>
+          </div>
+          <div class="feature-card card">
+            <h3>Problem Solving</h3>
+            <p>
+              Develop analytical skills by solving complex technical challenges
+              in cybersecurity.
+            </p>
+          </div>
+          
+        </div>
+      </div>
+    </section>
+
+    <%- include('partials/footer') %>
+  </body>
+</html>

@@ -1,0 +1,9 @@
+import base64
+
+ENCODED_FLAG = "R0FMXHtVTjFRVTNfNVM0VDFDX0ZMNEd9"
+
+reversed_encoded_flag = ENCODED_FLAG[::-1]
+
+decoded_flag = base64.b64decode(reversed_encoded_flag).decode('utf-8')
+
+print(f"Your unique CTF flag is: {decoded_flag}")
