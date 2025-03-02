@@ -5,14 +5,13 @@ const bodyParser = require("body-parser");
 const admin = require("firebase-admin");
 const session = require("express-session");
 const flash = require("connect-flash");
-require("dotenv").config();
 const fs = require("fs");
 const bcrypt = require("bcryptjs");
 const cookieParser = require('cookie-parser');
 
 // Use cookie-parser middleware to parse cookies
 app.use(cookieParser());
-
+require("dotenv").config();
 const PORT = process.env.PORT || 5000;
 
 const serviceAccount = {
@@ -30,6 +29,7 @@ const serviceAccount = {
 };
 
 
+console.log("Private Key:", process.env.FIREBASE_PRIVATE_KEY);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
