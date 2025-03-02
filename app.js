@@ -15,7 +15,7 @@ app.use(cookieParser());
 
 const PORT = process.env.PORT || 5000;
 
-const serviceAccount = require('./serviceAccountKey.json');
+const serviceAccount = require('serviceAccountKey.json');
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
